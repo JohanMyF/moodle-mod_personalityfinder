@@ -1612,3 +1612,4 @@ It supports three configurable sections:
 The plugin’s most important design principle is flexibility. It should not impose a fixed personality model. Instead, it should allow authorised users to build, share, adapt, and reuse reflective instruments through JSON presets.
 
 The intended outcome is not to label people, but to help them reflect wisely on how they tend to relate, serve, decide, organise, and contribute.
+
