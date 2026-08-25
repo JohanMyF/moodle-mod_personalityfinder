@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="PersonalityFinder icon">
+  <rect width="64" height="64" rx="14" fill="#1d8390"/>
+  <circle cx="23" cy="24" r="9" fill="#ffffff" opacity="0.95"/>
+  <circle cx="41" cy="24" r="9" fill="#ffffff" opacity="0.75"/>
+  <path d="M14 51c2.5-10 11-16 18-16s15.5 6 18 16" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.95"/>
+  <path d="M12 12h40" stroke="#eaf4ff" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+</svg>

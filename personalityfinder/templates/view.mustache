@@ -1,0 +1,174 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+}}
+<div class="personalityfinder-view">
+    {{#canmanage}}
+        <div class="personalityfinder-action-row">
+            <a class="btn btn-primary" href="{{builderurl}}">{{#str}}builderlink, mod_personalityfinder{{/str}}</a>
+        </div>
+    {{/canmanage}}
+
+    {{#configerror}}
+        <div class="alert alert-warning" role="alert">{{configerror}}</div>
+    {{/configerror}}
+
+    <div class="personalityfinder-builder-status">
+        <h3>{{instrument.title}}</h3>
+        {{#instrument.disclaimer}}
+            <div class="personalityfinder-prompt">{{{instrument.disclaimer}}}</div>
+        {{/instrument.disclaimer}}
+    </div>
+
+    {{#hasresult}}
+        <div class="personalityfinder-result-panel">
+            <h3>{{#str}}yourresults, mod_personalityfinder{{/str}}</h3>
+            <div class="personalityfinder-action-row personalityfinder-pdf-action-row">
+                <a class="btn btn-secondary" href="{{pdfurl}}">{{#str}}downloadreflectionpdf, mod_personalityfinder{{/str}}</a>
+                {{#canredo}}
+                    <a class="btn btn-outline-danger personalityfinder-redo-link" href="{{reseturl}}" data-confirm-message="{{#str}}redoactivityconfirm, mod_personalityfinder{{/str}}">{{#str}}redoactivity, mod_personalityfinder{{/str}}</a>
+                {{/canredo}}
+            </div>
+
+            <div class="personalityfinder-rating-card personalityfinder-attribute-reflection-card">
+                <h4>{{#str}}selectedattributes, mod_personalityfinder{{/str}}</h4>
+                <p class="personalityfinder-muted">{{#str}}attributecardsintro, mod_personalityfinder{{/str}}</p>
+                {{#canredo}}<p class="personalityfinder-muted">{{#str}}redoactivityhelp, mod_personalityfinder{{/str}}</p>{{/canredo}}
+                {{#result.hasattributecards}}
+                    <div class="personalityfinder-attribute-card-grid">
+                        {{#result.attributecards}}
+                            <div class="personalityfinder-attribute-card {{#shared}}personalityfinder-attribute-card-shared{{/shared}}">
+                                <h5>{{label}}</h5>
+                                {{#description}}<p>{{description}}</p>{{/description}}
+                                <div class="personalityfinder-attribute-badges">
+                                    {{#others}}<span class="personalityfinder-attribute-badge personalityfinder-attribute-badge-others">{{#str}}attributeothersbadge, mod_personalityfinder{{/str}}</span>{{/others}}
+                                </div>
+                            </div>
+                        {{/result.attributecards}}
+                    </div>
+                {{/result.hasattributecards}}
+                {{^result.hasattributecards}}<p class="personalityfinder-muted">{{#str}}noattributesselected, mod_personalityfinder{{/str}}</p>{{/result.hasattributecards}}
+            </div>
+
+            <div class="personalityfinder-rating-card">
+                <h4>{{#str}}focusdimensionresults, mod_personalityfinder{{/str}}</h4>
+                {{#result.focusdimensions}}
+                    <div class="personalityfinder-dimension-row">
+                        <div>
+                            <strong>{{left_label}} ↔ {{right_label}}</strong>
+                            {{#description}}<div class="personalityfinder-dimension-prompt">{{description}}</div>{{/description}}
+                        </div>
+                        <div><span class="personalityfinder-score-pill">{{scoretext}}</span></div>
+                    </div>
+                {{/result.focusdimensions}}
+            </div>
+
+            {{#result.hasmatrix}}
+                {{#result.matrix}}
+                <div class="personalityfinder-rating-card personalityfinder-result-matrix-card">
+                    <h4>{{#str}}matrixresult, mod_personalityfinder{{/str}}</h4>
+                    <p class="personalityfinder-muted">{{#str}}matrixresultintro, mod_personalityfinder{{/str}}</p>
+                    <div class="personalityfinder-result-matrix-layout">
+                        <div class="personalityfinder-result-matrix-side">
+                            <div class="personalityfinder-result-info-box">
+                                <strong>{{#str}}matrixpositionheading, mod_personalityfinder{{/str}}</strong>
+                                <div class="personalityfinder-muted">{{#str}}matrixpositionbasedonscores, mod_personalityfinder{{/str}}</div>
+                            </div>
+                            <div class="personalityfinder-result-info-box">
+                                <strong>{{#str}}scores, mod_personalityfinder{{/str}}</strong>
+                                <div>{{horizontal_left_label}} ↔ {{horizontal_right_label}} = {{horizontal_score_text}}</div>
+                                <div>{{vertical_bottom_label}} ↔ {{vertical_top_label}} = {{vertical_score_text}}</div>
+                            </div>
+                            <div class="personalityfinder-result-info-box">
+                                <strong>{{#str}}howtoreadthis, mod_personalityfinder{{/str}}</strong>
+                                <div class="personalityfinder-muted">{{#str}}matrixreadhorizontal, mod_personalityfinder{{/str}}</div>
+                                <div class="personalityfinder-muted">{{#str}}matrixreadvertical, mod_personalityfinder{{/str}}</div>
+                            </div>
+                        </div>
+                        <div class="personalityfinder-result-matrix-wrap">
+                            <div class="personalityfinder-result-axis-title personalityfinder-result-axis-title-left">{{horizontal_left_label}}</div>
+                            <div class="personalityfinder-result-axis-title personalityfinder-result-axis-title-right">{{horizontal_right_label}}</div>
+                            <div class="personalityfinder-result-axis-title personalityfinder-result-axis-title-top">{{vertical_top_label}}</div>
+                            <div class="personalityfinder-result-axis-title personalityfinder-result-axis-title-bottom">{{vertical_bottom_label}}</div>
+                            <div class="personalityfinder-result-matrix" role="img" aria-label="{{#str}}matrixresult, mod_personalityfinder{{/str}}">
+                                <div class="personalityfinder-result-x-ticks personalityfinder-result-x-ticks-top">
+                                    {{#horizontal_ticks}}<span>{{value}}</span>{{/horizontal_ticks}}
+                                </div>
+                                <div class="personalityfinder-result-x-ticks personalityfinder-result-x-ticks-bottom">
+                                    {{#horizontal_ticks}}<span>{{value}}</span>{{/horizontal_ticks}}
+                                </div>
+                                <div class="personalityfinder-result-y-ticks">
+                                    {{#vertical_ticks}}<span>{{value}}</span>{{/vertical_ticks}}
+                                </div>
+                                <div class="personalityfinder-result-matrix-quadrants">
+                                    {{#quadrants}}
+                                        <div class="personalityfinder-result-matrix-quadrant personalityfinder-result-matrix-{{position}} {{#selected}}personalityfinder-result-matrix-selected{{/selected}}">
+                                            {{#roman}}<div class="personalityfinder-result-matrix-roman">{{roman}}</div>{{/roman}}
+                                            <div class="personalityfinder-result-matrix-heading">{{heading}}</div>
+                                            {{#label}}<div class="personalityfinder-result-matrix-label">{{label}}</div>{{/label}}
+                                            {{#summary}}<div class="personalityfinder-result-matrix-summary">{{summary}}</div>{{/summary}}
+                                            {{#prompt}}<div class="personalityfinder-result-matrix-prompt">{{prompt}}</div>{{/prompt}}
+                                        </div>
+                                    {{/quadrants}}
+                                    <div class="personalityfinder-result-axis-line personalityfinder-result-axis-line-horizontal"></div>
+                                    <div class="personalityfinder-result-axis-line personalityfinder-result-axis-line-vertical"></div>
+                                    <div class="personalityfinder-result-marker" style="{{markerstyle}}" aria-label="{{#str}}matrixpositionheading, mod_personalityfinder{{/str}}">
+                                        <span class="personalityfinder-result-marker-dot"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="personalityfinder-result-matrix-note">
+                        <strong>{{#str}}scalenote, mod_personalityfinder{{/str}}</strong>
+                        {{#str}}matrixscalenote, mod_personalityfinder{{/str}}
+                    </div>
+                    <div class="personalityfinder-selected-card personalityfinder-result-primary-style">
+                        <h4>{{#str}}primarystyle, mod_personalityfinder{{/str}}: {{label}}</h4>
+                        {{#summary}}<p>{{summary}}</p>{{/summary}}
+                        {{#assignments}}<p><strong>{{#str}}possibleassignments, mod_personalityfinder{{/str}}:</strong> {{assignments}}</p>{{/assignments}}
+                        {{#prompt}}<p class="personalityfinder-muted">{{prompt}}</p>{{/prompt}}
+                    </div>
+                    <div class="personalityfinder-builder-helptext personalityfinder-result-matrix-note">
+                        {{#str}}matrixresultdisclaimer, mod_personalityfinder{{/str}}
+                    </div>
+                </div>
+                {{/result.matrix}}
+            {{/result.hasmatrix}}
+
+            <div class="personalityfinder-general-results-layout">
+                <div class="personalityfinder-rating-card personalityfinder-general-results-card">
+                    <h4>{{#str}}generaldimensionresults, mod_personalityfinder{{/str}}</h4>
+                    {{#result.generaldimensions}}
+                        <div class="personalityfinder-dimension-row">
+                            <div>
+                                <strong>{{left_label}} ↔ {{right_label}}</strong>
+                                {{#calculated}}<span class="personalityfinder-score-pill">{{#str}}calculateddimension, mod_personalityfinder{{/str}}</span>{{/calculated}}
+                                {{#description}}<div class="personalityfinder-dimension-prompt">{{description}}</div>{{/description}}
+                            </div>
+                            <div><span class="personalityfinder-score-pill">{{scoretext}}</span></div>
+                        </div>
+                    {{/result.generaldimensions}}
+                </div>
+
+                {{#result.hasreflectioncloud}}
+                    <div class="personalityfinder-rating-card personalityfinder-reflection-cloud-card">
+                        <h4>{{#str}}reflectioncloudheading, mod_personalityfinder{{/str}}</h4>
+                        <p class="personalityfinder-muted">{{#str}}reflectioncloudintro, mod_personalityfinder{{/str}}</p>
+                        <div class="personalityfinder-reflection-cloud" aria-label="{{#str}}reflectioncloudheading, mod_personalityfinder{{/str}}">
+                            {{#result.reflectioncloud}}
+                                <span class="personalityfinder-reflection-cloud-word {{class}}" style="{{style}}">{{label}}</span>
+                            {{/result.reflectioncloud}}
+                        </div>
+                        <div class="personalityfinder-builder-helptext personalityfinder-reflection-cloud-note">
+                            {{#str}}reflectioncloudnote, mod_personalityfinder{{/str}}
+                        </div>
+                    </div>
+                {{/result.hasreflectioncloud}}
+            </div>
+        </div>
+    {{/hasresult}}
+
+    {{#formlocked}}
+        <div class="alert alert-info" role="alert">{{#str}}resubmissionnotallowed, mod_personalityfinder{{/str}}</div>
+    {{/formlocked}}
+</div>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/personalityfinder/db" VERSION="2026061000" COMMENT="XMLDB file for Moodle mod_personalityfinder"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+  <TABLES>
+    <TABLE NAME="personalityfinder" COMMENT="PersonalityFinder activity instances">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Course id"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Activity name"/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Activity introduction"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Intro format"/>
+        <FIELD NAME="configjson" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON configuration for the personality reflection instrument"/>
+        <FIELD NAME="allowresubmit" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether learners may update an existing response"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+
+    <TABLE NAME="personalityfinder_responses" COMMENT="PersonalityFinder respondent submissions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="personalityfinderid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="PersonalityFinder activity instance id"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Respondent user id"/>
+        <FIELD NAME="responsesjson" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Raw responses stored as JSON"/>
+        <FIELD NAME="resultsjson" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Calculated results stored as JSON"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="personalityfinder_fk" TYPE="foreign" FIELDS="personalityfinderid" REFTABLE="personalityfinder" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="personalityfinder_user" UNIQUE="true" FIELDS="personalityfinderid, userid"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
