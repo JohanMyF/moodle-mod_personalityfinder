@@ -1209,6 +1209,47 @@ body.personalityfinder-builder-page .personalityfinder-matrix-quadrant-summary::
     border: 4px dotted rgba(220, 38, 38, 0.60);
     box-shadow: 0 0.2rem 0.7rem rgba(0, 0, 0, 0.12), inset 0 0 0 2px rgba(255, 255, 255, 0.45);
     pointer-events: none;
+    animation: personalityfinder-marker-arrive 1.65s cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+
+/* Give the matrix result a short visual reveal: the crosshairs travel from the
+   centre to the calculated intersection, then make a small settling movement. */
+@keyframes personalityfinder-marker-arrive {
+    0% {
+        left: 50%;
+        top: 50%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.82);
+    }
+    18% {
+        opacity: 1;
+    }
+    62% {
+        left: var(--pf-marker-left);
+        top: var(--pf-marker-top);
+        transform: translate(-50%, -50%) scale(1.04);
+    }
+    74% {
+        left: var(--pf-marker-left);
+        top: var(--pf-marker-top);
+        transform: translate(calc(-50% + 6px), calc(-50% - 4px)) scale(1.02) rotate(1deg);
+    }
+    84% {
+        left: var(--pf-marker-left);
+        top: var(--pf-marker-top);
+        transform: translate(calc(-50% - 4px), calc(-50% + 3px)) scale(1.01) rotate(-0.7deg);
+    }
+    92% {
+        left: var(--pf-marker-left);
+        top: var(--pf-marker-top);
+        transform: translate(calc(-50% + 2px), calc(-50% - 1px)) scale(1);
+    }
+    100% {
+        left: var(--pf-marker-left);
+        top: var(--pf-marker-top);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 .path-mod-personalityfinder .personalityfinder-result-marker::before,
@@ -1969,4 +2010,11 @@ body.personalityfinder-builder-page .personalityfinder-scale-dot::after {
 .path-mod-personalityfinder #intro.activity-description + .personalityfinder-description-toggle {
     display: block;
     margin: .35rem 0 1rem auto;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .path-mod-personalityfinder .personalityfinder-result-marker {
+        animation: none;
+    }
 }

@@ -90,6 +90,7 @@ if (optional_param('resetresponse', 0, PARAM_BOOL)) {
         get_string('previousresponsecleared', 'mod_personalityfinder'), null, \core\output\notification::NOTIFY_WARNING);
 }
 
+response_form::prepare_slider_submission($config);
 $mform = new response_form(null, ['config' => $config, 'cmid' => $cm->id]);
 
 if ($mform->is_cancelled()) {

@@ -44,8 +44,11 @@ export const init = () => {
 
         if (hidden.value) {
             slider.value = hidden.value;
-            slider.classList.add('is-selected');
         }
+        // Always initialise the registered Moodle field from the visible control.
+        // The visible range also has its own native POST name, so persistence still
+        // works if this AMD module is delayed or unavailable.
+        sync();
 
         // input/change handle normal dragging. click/pointerup/keyup handle the important
         // case where the respondent deliberately accepts the default notch without moving
@@ -59,7 +62,7 @@ export const init = () => {
         if (!form.dataset.personalityfinderSliderSubmitBound) {
             form.dataset.personalityfinderSliderSubmitBound = '1';
             form.addEventListener('submit', () => {
-                form.querySelectorAll('.personalityfinder-stepped-range.is-selected').forEach((selectedSlider) => {
+                form.querySelectorAll('.personalityfinder-stepped-range').forEach((selectedSlider) => {
                     const selectedTarget = selectedSlider.getAttribute('data-target');
                     if (!selectedTarget) {
                         return;

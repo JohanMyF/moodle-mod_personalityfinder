@@ -192,6 +192,7 @@ class response_form extends \moodleform {
 
         $rangeattrs = [
             'type' => 'range',
+            'name' => 'pf_slider_' . $fieldname,
             'class' => 'personalityfinder-stepped-range' . ($currentvalue > 0 ? ' is-selected' : ''),
             'min' => 1,
             'max' => $scalepoints,
@@ -226,6 +227,65 @@ class response_form extends \moodleform {
         $mform->addElement('html', $control);
         $mform->addElement('html', \html_writer::div($right, 'personalityfinder-scale-anchor personalityfinder-scale-anchor-right'));
         $mform->addElement('html', \html_writer::end_div());
+    }
+
+
+    /**
+     * Copies the native range-control submission into the Moodle form fields.
+     *
+     * The visible sliders are raw HTML controls while Moodle validation and
+     * persistence use registered hidden form elements. JavaScript keeps those
+     * elements in sync for the normal interactive experience, but this server-
+     * side bridge also accepts the native range values. That prevents lost
+     * responses when AMD JavaScript is delayed, cached incorrectly or blocked.
+     *
+     * @param array $config Instrument configuration.
+     */
+    public static function prepare_slider_submission(array $config): void {
+        if (!data_submitted()) {
+            return;
+        }
+
+        $dimensions = array_values($config['focus_dimensions'] ?? []);
+        $dimensionsafes = self::unique_safe_names($dimensions, 'dimension');
+        foreach ($dimensions as $dimensionindex => $dimension) {
+            $dimensionid = $dimensionsafes[$dimensionindex] ?? self::safe_name($dimension['id'] ?? '');
+            $scalepoints = max(2, min(8, (int)($dimension['scale_points'] ?? ($config['settings']['focus_scale_points'] ?? 4))));
+            $items = array_values($dimension['items'] ?? []);
+            $itemsafes = self::unique_safe_names($items, 'item');
+            foreach ($items as $itemindex => $item) {
+                $itemid = $itemsafes[$itemindex] ?? self::safe_name($item['id'] ?? '');
+                $field = 'focus_' . $dimensionid . '_' . $itemid;
+                self::copy_slider_post_value($field, $scalepoints);
+            }
+        }
+
+        $general = array_values($config['general_dimensions'] ?? []);
+        $generalsafes = self::unique_safe_names($general, 'general');
+        $defaultscale = max(2, min(8, (int)($config['settings']['general_dimension_scale_points'] ?? 8)));
+        foreach ($general as $dimensionindex => $dimension) {
+            if (($dimension['source'] ?? '') === 'focus_dimension') {
+                continue;
+            }
+            $field = 'general_' . ($generalsafes[$dimensionindex] ?? self::safe_name($dimension['id'] ?? ''));
+            $scalepoints = max(2, min(8, (int)($dimension['scale_points'] ?? $defaultscale)));
+            self::copy_slider_post_value($field, $scalepoints);
+        }
+    }
+
+    /**
+     * Copies one posted native slider value into its registered Moodle field.
+     *
+     * @param string $field Moodle form field name.
+     * @param int $scalepoints Maximum scale value.
+     */
+    protected static function copy_slider_post_value(string $field, int $scalepoints): void {
+        $sliderfield = 'pf_slider_' . $field;
+        $value = optional_param($sliderfield, 0, PARAM_INT);
+        if ($value < 1) {
+            return;
+        }
+        $_POST[$field] = max(1, min($scalepoints, $value));
     }
 
     /**
