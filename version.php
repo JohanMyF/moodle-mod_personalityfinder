@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_personalityfinder';
-$plugin->version = 2026091100;
+$plugin->version = 2026092901;
 $plugin->requires = 2024042200; // Moodle 4.4.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.2.10-alpha';
+$plugin->release = '0.2.12-alpha';

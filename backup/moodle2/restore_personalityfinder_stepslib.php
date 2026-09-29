@@ -34,7 +34,10 @@ class restore_personalityfinder_activity_structure_step extends restore_activity
      * @return array
      */
     protected function define_structure() {
-        return [new restore_path_element('personalityfinder', '/activity/personalityfinder')];
+        $paths = [];
+        $paths[] = new restore_path_element('personalityfinder', '/activity/personalityfinder');
+
+        return $this->prepare_activity_structure($paths);
     }
 
     /**
